@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="600" prefWidth="900" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.socialmedia.ui.controllers.FeedController">
+
+    <top>
+        <HBox spacing="10">
+            <padding>
+                <Insets bottom="12" left="12" right="12" top="12" />
+            </padding>
+
+            <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="FakeBook" />
+            <Pane HBox.hgrow="ALWAYS" />
+            <Button onAction="#onLogout" text="Logout" />
+        </HBox>
+    </top>
+
+    <center>
+        <Label text="Feed screen placeholder..." BorderPane.alignment="CENTER" />
+    </center>
+
+</BorderPane>
