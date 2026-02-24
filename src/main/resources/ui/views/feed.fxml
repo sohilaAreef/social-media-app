@@ -4,22 +4,42 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="600" prefWidth="900" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.socialmedia.ui.controllers.FeedController">
+<BorderPane prefHeight="600" prefWidth="900" style="-fx-background-color: #f0f2f5;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.socialmedia.ui.controllers.FeedController">
 
     <top>
-        <HBox spacing="10">
+        <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
             <padding>
-                <Insets bottom="12" left="12" right="12" top="12" />
+                <Insets bottom="12" left="20" right="20" top="12" />
             </padding>
 
-            <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="FakeBook" />
+            <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #1877f2;" text="FakeBook" />
             <Pane HBox.hgrow="ALWAYS" />
-            <Button onAction="#onLogout" text="Logout" />
+            <Button onAction="#onLogout" style="-fx-background-radius: 20; -fx-background-color: #e4e6eb;" text="Logout" />
         </HBox>
     </top>
 
     <center>
-        <Label text="Feed screen placeholder..." BorderPane.alignment="CENTER" />
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;">
+            <content>
+                <VBox spacing="20" maxWidth="600" alignment="TOP_CENTER">
+                    <padding>
+                        <Insets top="20" bottom="20" left="20" right="20"/>
+                    </padding>
+
+                    <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);">
+                        <Label text="Create a New Post" style="-fx-font-weight: bold; -fx-text-fill: #65676b;" />
+                        <TextArea fx:id="postContentArea" prefHeight="80" promptText="What's on your mind?" wrapText="true" 
+                                  style="-fx-background-color: #f0f2f5; -fx-control-inner-background: #f0f2f5; -fx-background-radius: 8; -fx-border-color: transparent;" />
+                        <HBox alignment="CENTER_RIGHT">
+                            <Button onAction="#handlePostAction" style="-fx-background-color: #1877f2; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;" text="Post" />
+                        </HBox>
+                    </VBox>
+
+                    <VBox fx:id="postsContainer" spacing="15">
+                        </VBox>
+                </VBox>
+            </content>
+        </ScrollPane>
     </center>
 
 </BorderPane>

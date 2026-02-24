@@ -1,6 +1,6 @@
 package com.socialmedia.models;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 public class Post {
     private int id;
@@ -12,12 +12,10 @@ public class Post {
     public Post() {
     }
 
-    public Post(String content, Timestamp createdAt, int id, String img, int userId) {
-        this.content = content;
-        this.createdAt = createdAt;
-        this.id = id;
-        this.img = img;
+    public Post(int userId, String content, String img) {
         this.userId = userId;
+        this.content = content;
+        this.img = img;
     }
 
     public int getId() {
