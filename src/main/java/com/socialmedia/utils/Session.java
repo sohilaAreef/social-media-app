@@ -1,19 +1,11 @@
 package com.socialmedia.utils;
 
-public final class Session {
-    private static String currentUserEmail;
+import com.socialmedia.models.User;
 
-    private Session() {}
+public class Session {
+    private static User currentUser;
 
-    public static String getCurrentUserEmail() {
-        return currentUserEmail;
-    }
-
-    public static void setCurrentUserEmail(String email) {
-        currentUserEmail = email;
-    }
-
-    public static void clear() {
-        currentUserEmail = null;
-    }
+    public static User getCurrentUser() { return currentUser; }
+    public static void setCurrentUser(User user) { currentUser = user; }
+    public static void clear() { currentUser = null; }
 }

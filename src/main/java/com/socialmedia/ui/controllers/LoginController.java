@@ -1,5 +1,6 @@
 package com.socialmedia.ui.controllers;
 
+import com.socialmedia.models.User;
 import com.socialmedia.services.AuthService;
 import com.socialmedia.app.Navigator;
 import javafx.fxml.FXML;
@@ -21,14 +22,11 @@ public class LoginController {
         String pass = passwordField.getText();
 
         AuthService authService = new AuthService();
-        boolean ok = authService.login(email, pass);
+        User ok = authService.login(email, pass);
 
-        if (ok) {
             Navigator.goToFeed();
-        } else {
-            errorLabel.setText("Invalid email or password");
-        }
     }
+
     @FXML
     private void goToRegister() {
         Navigator.goToRegister();

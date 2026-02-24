@@ -1,6 +1,9 @@
 package com.socialmedia.ui.controllers;
 
 import com.socialmedia.app.Navigator;
+import com.socialmedia.models.User;
+import com.socialmedia.services.AuthService;
+import com.socialmedia.utils.Session;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -14,6 +17,8 @@ public class RegisterController {
     @FXML private PasswordField confirmField;
     @FXML private Label errorLabel;
 
+    private final AuthService authService = new AuthService();
+
     @FXML
     private void onRegister() {
         errorLabel.setText("");
@@ -23,7 +28,7 @@ public class RegisterController {
         String pass = passwordField.getText();
         String confirm = confirmField.getText();
 
-        if (name.isBlank() || email.isBlank() || pass.isBlank()) {
+        if (name == null || name.isBlank() || email == null || email.isBlank() || pass == null || pass.isBlank()) {
             errorLabel.setText("Please fill all fields");
             return;
         }
@@ -32,8 +37,18 @@ public class RegisterController {
             return;
         }
 
-        // Mock: اعتبره اتسجل
-        Navigator.goToLogin();
+        try {
+            User user = authService.register(name, email, pass);
+
+            Session.setCurrentUser(user);
+            Navigator.goToFeed();
+
+        } catch (IllegalArgumentException ex) {
+            errorLabel.setText(ex.getMessage());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            errorLabel.setText("Something went wrong. Please try again.");
+        }
     }
 
     @FXML
