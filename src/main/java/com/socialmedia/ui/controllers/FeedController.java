@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.socialmedia.app.Navigator;
 import com.socialmedia.services.AuthService;
+import com.socialmedia.services.LikeService;
 import com.socialmedia.services.PostService;
 import com.socialmedia.utils.Session;
 import javafx.fxml.FXML;
@@ -30,9 +31,13 @@ public class FeedController {
     @FXML
     private ScrollPane feedScroll;
 
+    @FXML
+    private TextField searchField;
+
     private final FeedService feedService = new FeedService();
     private final PostService postService = new PostService();
     private final AuthService authService = new AuthService();
+    private final LikeService likeService = new LikeService();
 
     private int page = 0;
     private final int pageSize = 10;
@@ -152,9 +157,21 @@ public class FeedController {
         actions.setPadding(new Insets(8, 0, 0, 0));
         actions.setStyle("-fx-border-color: #e5e7eb; -fx-border-width: 1 0 0 0;");
 
-        Button likeBtn = new Button("Like");
-        likeBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #65676b; -fx-font-weight: bold;");
-        likeBtn.setOnAction(e -> onLike(post.getPostId()));
+        Button likeBtn = new Button();
+        likeBtn.setStyle("-fx-background-color: transparent; -fx-font-weight: bold;");
+
+        int currentUserId = Session.getCurrentUser().getId();
+
+        try {
+            boolean liked = likeService.isLiked(currentUserId, post.getPostId());
+            int count = likeService.countLikes(post.getPostId());
+            applyLikeStyle(likeBtn, liked, count);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            applyLikeStyle(likeBtn, false, 0);
+        }
+
+        likeBtn.setOnAction(e -> onLike(post.getPostId(), likeBtn));
 
         Button commentBtn = new Button("Comment");
         commentBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #65676b; -fx-font-weight: bold;");
@@ -166,10 +183,28 @@ public class FeedController {
         return card;
     }
 
-    private void onLike(int postId) {
-        System.out.println("Like clicked for postId=" + postId);
-    }
+    private void onLike(int postId, Button likeBtn) {
+        try {
+            int userId = Session.getCurrentUser().getId();
 
+            boolean liked = likeService.toggleLike(userId, postId);
+            int count = likeService.countLikes(postId);
+
+            applyLikeStyle(likeBtn, liked, count);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    private void applyLikeStyle(Button btn, boolean liked, int count) {
+        if (liked) {
+            btn.setText("Liked (" + count + ")");
+            btn.setStyle("-fx-background-color: transparent; -fx-text-fill: #1877f2; -fx-font-weight: bold;");
+        } else {
+            btn.setText("Like (" + count + ")");
+            btn.setStyle("-fx-background-color: transparent; -fx-text-fill: #65676b; -fx-font-weight: bold;");
+        }
+    }
     private void onComment(int postId) {
         System.out.println("Comment clicked for postId=" + postId);
     }
@@ -182,7 +217,6 @@ public class FeedController {
 
         System.out.println("Chat clicked");
     }
-    @FXML private TextField searchField;
     @FXML private void onSearch() {
         String q = (searchField.getText() == null) ? "" : searchField.getText().trim();
         if (q.isEmpty()) return;
