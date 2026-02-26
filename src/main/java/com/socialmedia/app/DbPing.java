@@ -12,7 +12,7 @@ public class DbPing {
 
             // اختبار بسيط: هات عدد اليوزرز
             try (Statement st = con.createStatement();
-                 ResultSet rs = st.executeQuery("SELECT COUNT(*) AS cnt FROM users")) {
+                 ResultSet rs = st.executeQuery("SELECT COUNT(*) AS cnt FROM profile")) {
 
                 if (rs.next()) {
                     System.out.println("✅ users count = " + rs.getInt("cnt"));

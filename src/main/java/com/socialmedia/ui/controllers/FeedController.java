@@ -50,4 +50,10 @@ public class FeedController {
         authService.logout();
         Navigator.goToLogin();
     }
+    
+    @FXML
+    private void onProfile() {
+            int userId = com.socialmedia.utils.Session.getCurrentUser().getId();
+            Navigator.goToProfile(userId);
+    }
 }

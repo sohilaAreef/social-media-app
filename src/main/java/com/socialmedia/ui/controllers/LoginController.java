@@ -3,6 +3,7 @@ package com.socialmedia.ui.controllers;
 import com.socialmedia.models.User;
 import com.socialmedia.services.AuthService;
 import com.socialmedia.app.Navigator;
+import com.socialmedia.utils.Session;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -22,9 +23,14 @@ public class LoginController {
         String pass = passwordField.getText();
 
         AuthService authService = new AuthService();
-        User ok = authService.login(email, pass);
-
+        User user = authService.login(email, pass);
+        
+        if (user != null) {
+            Session.setCurrentUser(user);
             Navigator.goToFeed();
+        } else {
+            errorLabel.setText("Login failed. Please try again.");
+        }
     }
 
     @FXML

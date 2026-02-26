@@ -11,13 +11,19 @@ public class Profile {
     public Profile() {
     }
 
-    public Profile(String bio, Timestamp createdAt, String img, int userId) {
+    public Profile(int userId, String bio, String img, Timestamp createdAt) {
         this.bio = bio;
         this.createdAt = createdAt;
         this.img = img;
         this.userId = userId;
     }
 
+    public Profile(int userId, String bio, String img) {
+        this.bio = bio;
+        this.img = img;
+        this.userId = userId;
+    }
+    
     public int getUserId() {
         return userId;
     }

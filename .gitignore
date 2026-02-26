@@ -12,3 +12,4 @@ Thumbs.db
 # Enviroment
 application.properties
 src/main/resources/application.properties
+/bin/
