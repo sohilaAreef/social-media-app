@@ -1,19 +1,19 @@
 package com.socialmedia.models;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 public class Like {
     private int userId;
     private int postId;
     private Timestamp createdAt;
 
-    public Like(Timestamp createdAt, int postId, int userId) {
-        this.createdAt = createdAt;
-        this.postId = postId;
-        this.userId = userId;
+    public Like() {
     }
 
-    public Like() {
+    public Like(int userId, int postId, Timestamp createdAt) {
+        this.userId = userId;
+        this.postId = postId;
+        this.createdAt = createdAt;
     }
 
     public int getUserId() {
@@ -39,5 +39,4 @@ public class Like {
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
-    
 }

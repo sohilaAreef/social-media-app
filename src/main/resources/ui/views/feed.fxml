@@ -6,37 +6,61 @@
 
 <BorderPane prefHeight="600" prefWidth="900" style="-fx-background-color: #f0f2f5;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.socialmedia.ui.controllers.FeedController">
 
+    <!-- TOP NAVBAR -->
     <top>
-        <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
-            <padding>
-                <Insets bottom="12" left="20" right="20" top="12" />
-            </padding>
+        <VBox>
+            <HBox alignment="CENTER_LEFT" spacing="12" style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 10, 0, 0, 4);">
+                <padding>
+                    <Insets bottom="12" left="20" right="20" top="12" />
+                </padding>
 
-            <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #1877f2;" text="FakeBook" />
-            <Pane HBox.hgrow="ALWAYS" />
-            <Button onAction="#onLogout" style="-fx-background-radius: 20; -fx-background-color: #e4e6eb;" text="Logout" />
-        </HBox>
+                <!-- Brand -->
+                <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #1877f2;" text="FakeBook" />
+
+                <!-- Feature Buttons -->
+                <HBox spacing="8">
+                    <Button onAction="#goToProfile" style="-fx-background-radius: 16; -fx-background-color: #e4e6eb;" text="Profile" />
+                    <Button onAction="#goToFriends" style="-fx-background-radius: 16; -fx-background-color: #e4e6eb;" text="Friends" />
+                    <Button onAction="#goToSearch" style="-fx-background-radius: 16; -fx-background-color: #e4e6eb;" text="Search" />
+                </HBox>
+
+                <Pane HBox.hgrow="ALWAYS" />
+
+                <!-- Right side actions -->
+                <HBox alignment="CENTER_RIGHT" spacing="8">
+                    <Button onAction="#goToChat" style="-fx-background-radius: 16; -fx-background-color: #e4e6eb;" text="Chat" />
+                    <Button onAction="#goToNotifications" style="-fx-background-radius: 16; -fx-background-color: #e4e6eb;" text="Notifications" />
+                    <Button onAction="#onLogout" style="-fx-background-radius: 16; -fx-background-color: #e4e6eb;" text="Logout" />
+                </HBox>
+            </HBox>
+
+            <!-- Optional: small divider -->
+            <Separator />
+        </VBox>
     </top>
 
+    <!-- CENTER CONTENT -->
     <center>
-        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;">
+        <ScrollPane fx:id="feedScroll" fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;">
             <content>
-                <VBox spacing="20" maxWidth="600" alignment="TOP_CENTER">
+                <VBox fillWidth="true" spacing="16">
                     <padding>
-                        <Insets top="20" bottom="20" left="20" right="20"/>
+                        <Insets bottom="20" left="20" right="20" top="16" />
                     </padding>
 
-                    <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);">
-                        <Label text="Create a New Post" style="-fx-font-weight: bold; -fx-text-fill: #65676b;" />
-                        <TextArea fx:id="postContentArea" prefHeight="80" promptText="What's on your mind?" wrapText="true" 
-                                  style="-fx-background-color: #f0f2f5; -fx-control-inner-background: #f0f2f5; -fx-background-radius: 8; -fx-border-color: transparent;" />
+                    <!-- CREATE POST: full width -->
+                    <VBox maxWidth="1.7976931348623157E308" prefHeight="126.0" prefWidth="855.0" spacing="10" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);" VBox.vgrow="NEVER">
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: #65676b;" text="Create a New Post" />
+
+                        <TextArea fx:id="postContentArea" prefHeight="108.0" prefWidth="825.0" promptText="What's on your mind?...." style="-fx-background-color: #f0f2f5; -fx-control-inner-background: #f0f2f5; -fx-background-radius: 8; -fx-border-color: transparent;" wrapText="true" />
+
                         <HBox alignment="CENTER_RIGHT">
-                            <Button onAction="#handlePostAction" style="-fx-background-color: #1877f2; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;" text="Post" />
+                            <Button onAction="#handlePostAction" style="-fx-background-color: #1877f2; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 8 18;" text="Post" />
                         </HBox>
                     </VBox>
 
-                    <VBox fx:id="postsContainer" spacing="15">
-                        </VBox>
+                    <!-- POSTS CONTAINER: full width -->
+                    <VBox fx:id="postsContainer" fillWidth="true" maxWidth="1.7976931348623157E308" spacing="12" />
                 </VBox>
             </content>
         </ScrollPane>

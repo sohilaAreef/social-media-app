@@ -1,8 +1,6 @@
 package com.socialmedia.services;
 
 import java.sql.SQLException;
-import java.util.List;
-
 import com.socialmedia.dao.PostDao;
 import com.socialmedia.models.Post;
 
@@ -15,8 +13,5 @@ public class PostService {
         }
         Post post = new Post(userId, content, img);
         postDao.createPost(post);
-    }
-    public List<Post> getNewsFeed() throws SQLException {
-        return postDao.getAllPosts();
     }
 }

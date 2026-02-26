@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.socialmedia.config.DatabaseConfig;
 import com.socialmedia.models.Post;
+import com.socialmedia.models.FeedPost;
 
 public class PostDao {
    
@@ -23,23 +24,44 @@ public class PostDao {
         }
     }
 
-   
-    public List<Post> getAllPosts() throws SQLException {
-        List<Post> posts = new ArrayList<>();
-        String sql = "SELECT * FROM `post` ORDER BY created_at DESC";
+    public List<FeedPost> getFeedPosts(int limit, int offset) throws SQLException {
+        List<FeedPost> posts = new ArrayList<>();
+
+        String sql = """
+        SELECT
+            p.id AS post_id,
+            p.user_id,
+            u.name AS user_name,
+            p.content,
+            p.img,
+            p.created_at
+        FROM `post` p
+        JOIN `user` u ON u.id = p.user_id
+        ORDER BY p.created_at DESC
+        LIMIT ? OFFSET ?;
+        """;
+
         try (Connection con = DatabaseConfig.getConnection();
-             Statement st = con.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
-            while (rs.next()) {
-                Post p = new Post();
-                p.setId(rs.getInt("id"));
-                p.setUserId(rs.getInt("user_id"));
-                p.setContent(rs.getString("content"));
-                p.setImg(rs.getString("img"));
-                p.setCreatedAt(rs.getTimestamp("created_at"));
-                posts.add(p);
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, limit);
+            ps.setInt(2, offset);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    FeedPost fp = new FeedPost(
+                            rs.getInt("post_id"),
+                            rs.getInt("user_id"),
+                            rs.getString("user_name"),
+                            rs.getString("content"),
+                            rs.getString("img"),
+                            rs.getTimestamp("created_at")
+                    );
+                    posts.add(fp);
+                }
             }
         }
+
         return posts;
     }
 }
