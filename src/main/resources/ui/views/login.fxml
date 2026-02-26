@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.socialmedia.ui.controllers.LoginController"
-      spacing="12" alignment="CENTER">
+<VBox alignment="CENTER" prefHeight="350.0" prefWidth="389.0" spacing="12" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.socialmedia.ui.controllers.LoginController">
 
     <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
+        <Insets bottom="20" left="20" right="20" top="20" />
     </padding>
 
-    <Label text="Login" style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
+    <Label style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Login" />
 
-    <TextField fx:id="emailField" promptText="Email" maxWidth="260"/>
-    <PasswordField fx:id="passwordField" promptText="Password" maxWidth="260"/>
+    <TextField fx:id="emailField" maxWidth="260" promptText="Email" />
+    <PasswordField fx:id="passwordField" maxWidth="260" promptText="Password" />
 
-    <Button text="Login" onAction="#onLogin" maxWidth="260"/>
-    <Hyperlink text="Create account" onAction="#goToRegister"/>
+    <Button maxWidth="260" onAction="#onLogin" text="Login" />
+    <Hyperlink onAction="#goToRegister" text="Create account" />
 
-    <Label fx:id="errorLabel" textFill="red"/>
+    <Label fx:id="errorLabel" textFill="red" />
 </VBox>
