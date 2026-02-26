@@ -8,15 +8,12 @@ import com.socialmedia.services.AuthService;
 import com.socialmedia.services.PostService;
 import com.socialmedia.utils.Session;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import com.socialmedia.models.FeedPost;
 import com.socialmedia.services.FeedService;
 import com.socialmedia.utils.TimeAgo;
 import javafx.application.Platform;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -72,6 +69,7 @@ public class FeedController {
 
                 postContentArea.clear();
                 System.out.println("Post published successfully!");
+                onRefresh();
             } else {
                 System.err.println("Error: Session is null. Please login first.");
             }
@@ -184,9 +182,12 @@ public class FeedController {
 
         System.out.println("Chat clicked");
     }
-    @FXML private void goToSearch() {
+    @FXML private TextField searchField;
+    @FXML private void onSearch() {
+        String q = (searchField.getText() == null) ? "" : searchField.getText().trim();
+        if (q.isEmpty()) return;
 
-        System.out.println("Chat clicked");
+        System.out.println("Search query: " + q);
     }
     @FXML private void goToChat() {
 
@@ -199,5 +200,13 @@ public class FeedController {
     @FXML private void onLogout() {
         authService.logout();
         Navigator.goToLogin();
+    }
+    @FXML private void onRefresh() {
+        page = 0;
+        hasMore = true;
+        isLoading = false;
+        postsContainer.getChildren().clear();
+        feedScroll.setVvalue(0);
+        loadNextPage();
     }
 }
