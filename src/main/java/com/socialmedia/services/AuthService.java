@@ -8,7 +8,7 @@ import com.socialmedia.utils.Session;
 
 public class AuthService {
 
-    private final UserDao userDAO = new UserDao();
+    private static final UserDao userDAO = new UserDao();
     private final ProfileDao profileDAO = new ProfileDao();
 
     public User register(String name, String email, String plainPassword) {
@@ -27,7 +27,7 @@ public class AuthService {
         return user;
     }
 
-    public User login(String email, String plainPassword) {
+    public static User login(String email, String plainPassword) {
         if (email == null || email.isBlank() || plainPassword == null || plainPassword.isBlank()) {
             throw new IllegalArgumentException("Email and password are required");
         }

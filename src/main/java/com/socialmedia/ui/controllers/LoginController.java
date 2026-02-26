@@ -3,6 +3,7 @@ package com.socialmedia.ui.controllers;
 import com.socialmedia.models.User;
 import com.socialmedia.services.AuthService;
 import com.socialmedia.app.Navigator;
+import com.socialmedia.utils.Session;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -16,15 +17,18 @@ public class LoginController {
 
     @FXML
     private void onLogin() {
-        errorLabel.setText("");
+        try {
+            User user = AuthService.login(emailField.getText(), passwordField.getText());
 
-        String email = emailField.getText();
-        String pass = passwordField.getText();
-
-        AuthService authService = new AuthService();
-        User ok = authService.login(email, pass);
+            Session.setCurrentUser(user);
 
             Navigator.goToFeed();
+        } catch (IllegalArgumentException ex) {
+            errorLabel.setText(ex.getMessage());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            errorLabel.setText("Something went wrong.");
+        }
     }
 
     @FXML
