@@ -4,12 +4,12 @@ import java.sql.Timestamp;
 
 public class FeedPost {
 
-    private int postId;
-    private int userId;
-    private String userName;
-    private String content;
-    private String img;
-    private Timestamp createdAt;
+    private final int postId;
+    private final int userId;
+    private final String userName;
+    private final String content;
+    private final String img;
+    private final Timestamp createdAt;
 
     public FeedPost(int postId, int userId, String userName,
                     String content, String img, Timestamp createdAt) {

@@ -9,7 +9,7 @@ public class PostService {
 
     public void addNewPost(int userId, String content, String img) throws SQLException{
         if(content == null || content.trim().isEmpty()){
-            throw new IllegalArgumentException("Post conent cannot be empty");
+            throw new IllegalArgumentException("Post content cannot be empty");
         }
         Post post = new Post(userId, content, img);
         postDao.createPost(post);

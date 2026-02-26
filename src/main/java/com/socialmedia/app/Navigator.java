@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public final class Navigator {
     private static Stage stage;
@@ -18,7 +19,7 @@ public final class Navigator {
 
     public static void goTo(String fxmlPath, String title) {
         try {
-            Parent root = FXMLLoader.load(Navigator.class.getResource(fxmlPath));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(Navigator.class.getResource(fxmlPath)));
             Scene scene = new Scene(root);
             stage.setTitle(title);
             stage.setScene(scene);

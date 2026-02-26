@@ -17,7 +17,7 @@ public class SeedRunner {
 
             createTables(con);
 
-            if (!isTableEmpty(con, "`user`")) {
+            if (!isTableEmpty(con)) {
                 System.out.println("✅ Seed already exists (users table not empty). Skipping seeding.");
                 con.rollback();
                 return;
@@ -105,8 +105,8 @@ public class SeedRunner {
         System.out.println("✅ Tables ensured.");
     }
 
-    private static boolean isTableEmpty(Connection con, String table) throws SQLException {
-        String sql = "SELECT COUNT(*) FROM " + table;
+    private static boolean isTableEmpty(Connection con) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM " + "`user`";
         try (Statement st = con.createStatement();
              ResultSet rs = st.executeQuery(sql)) {
             rs.next();
