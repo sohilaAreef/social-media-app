@@ -13,7 +13,7 @@ public class ProfileService {
     public ProfileService() {
         this.profileDao = new ProfileDao();
     }
-    
+
     public UserProfile getProfile(int userId) {
         return profileDao.getProfile(userId);
     }

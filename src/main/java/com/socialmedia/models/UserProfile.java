@@ -3,7 +3,7 @@ package com.socialmedia.models;
 import java.sql.Timestamp;
 
 public class UserProfile {
-//  DTO   
+    //  DTO
     private int id;
     private String name;
     private String email;

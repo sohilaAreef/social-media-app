@@ -22,15 +22,15 @@ public class ProfileController {
 
     private final ProfileService profileService = new ProfileService();
     private int currentUserId;
-    
+
     private File selectedImageFile;
-    private String currentImagePath;  
+    private String currentImagePath;
 
     @FXML private Label lblTitle, lblName, lblEmail, lblJoined;
     @FXML private TextArea lblBio,
-    					   txtBio;		
+            txtBio;
     @FXML private Button btnEdit,
-    					 btnChangeImage, btnSave, btnCancel;
+            btnChangeImage, btnSave, btnCancel;
     @FXML private ImageView imgProfile;
     @FXML private VBox profileCard, emailSection, joinedSection;
     @FXML private HBox buttonBox;
@@ -38,7 +38,7 @@ public class ProfileController {
     @FXML private TextField txtName;
     @FXML private PasswordField txtPassword;
 
-    
+
     public void loadUserProfile(int userId) {
         this.currentUserId = userId;
 
@@ -52,7 +52,7 @@ public class ProfileController {
         String bio = userProfile.getBio();
         Timestamp createdAt = userProfile.getCreatedAt();
         String imgPath = userProfile.getImg();
-        
+
         // Store the current image path to preserve it if not changed
         this.currentImagePath = imgPath;
         this.selectedImageFile = null;  // Reset selected image file
@@ -74,7 +74,7 @@ public class ProfileController {
             lblJoined.setText("N/A");
         }
 
-        
+
         if (txtName != null) {
             txtName.setText(name != null ? name : "");
         }
@@ -82,7 +82,7 @@ public class ProfileController {
             txtBio.setText(bio != null ? bio : "");
         }
 
-        
+
         Image image;
         try {
             if (imgPath != null && !imgPath.isBlank()) {
@@ -112,14 +112,14 @@ public class ProfileController {
             fileChooser.getExtensionFilters().add(
                     new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
             );
-            
+
             if (imgProfile.getScene() != null && imgProfile.getScene().getWindow() != null) {
                 File file = fileChooser.showOpenDialog(imgProfile.getScene().getWindow());
                 if (file != null) {
                     selectedImageFile = file;
                     imgProfile.setImage(new Image(file.toURI().toString()));
                 }
-            } 
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -127,12 +127,12 @@ public class ProfileController {
 
     @FXML
     public void onSaveProfile() {
-        
+
         if (txtName == null || txtBio == null) {
             showAlert(Alert.AlertType.ERROR, "Error: Edit fields not found. Please reload the page.");
             return;
         }
-        
+
         String name = txtName.getText().trim();
         String bio = txtBio.getText().trim();
         String newPassword = txtPassword != null ? txtPassword.getText().trim() : "";
@@ -145,7 +145,7 @@ public class ProfileController {
 
         try {
             User user = new User(currentUserId, name, "");
-            
+
             // Use the new image if selected, otherwise preserve the current image path
             String imagePath = selectedImageFile != null ? selectedImageFile.getAbsolutePath() : currentImagePath;
             Profile profile = new Profile(currentUserId, bio, imagePath);
@@ -158,7 +158,7 @@ public class ProfileController {
                     txtPassword.clear();
                 }
                 selectedImageFile = null;
-                
+
                 // Navigate back to profile view
                 Navigator.goToProfile(currentUserId);
             } else {
