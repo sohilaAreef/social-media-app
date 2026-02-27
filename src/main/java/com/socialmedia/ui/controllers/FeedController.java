@@ -333,10 +333,6 @@ public class FeedController {
         popup.show();
     }
 
-    @FXML private void goToProfile() {
-
-        Navigator.goToProfile();
-    }
     @FXML private void goToFriends() {
 
         System.out.println("Chat clicked");

@@ -1,7 +1,6 @@
 package com.socialmedia.services;
 
 import com.socialmedia.dao.ProfileDao;
-import com.socialmedia.dao.ProfileDao.ProfileData;
 import com.socialmedia.models.Profile;
 import com.socialmedia.models.User;
 import com.socialmedia.models.UserProfile;
