@@ -19,7 +19,6 @@ public class LoginController {
     private void onLogin() {
         try {
             User user = AuthService.login(emailField.getText(), passwordField.getText());
-
             Session.setCurrentUser(user);
 
             Navigator.goToFeed();

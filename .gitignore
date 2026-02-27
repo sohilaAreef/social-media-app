@@ -10,5 +10,9 @@ target/
 Thumbs.db
 
 # Enviroment
-application.properties
+/bin/
+
+.classpath
+
+.project
 src/main/resources/application.properties

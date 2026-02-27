@@ -41,5 +41,37 @@ public final class Navigator {
         goTo("/ui/views/feed.fxml", "News Feed");
     }
 
-    public static void goToProfile() { goTo("/ui/views/profile.fxml", "Profile");}
+    public static void goToProfile(int userId) {
+        try {
+            FXMLLoader loader = new FXMLLoader(Navigator.class.getResource("/ui/views/profile.fxml"));
+            Parent root = loader.load();
+            
+            com.socialmedia.ui.controllers.ProfileController controller = loader.getController();
+            controller.loadUserProfile(userId);
+            
+            Scene scene = new Scene(root);
+            stage.setTitle("Profile");
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to load profile view: " + e.getMessage(), e);
+        }
+    }
+
+    public static void goToProfileEdit(int userId) {
+        try {
+            FXMLLoader loader = new FXMLLoader(Navigator.class.getResource("/ui/views/profile-edit.fxml"));
+            Parent root = loader.load();
+            
+            com.socialmedia.ui.controllers.ProfileController controller = loader.getController();
+            controller.loadUserProfile(userId);
+            
+            Scene scene = new Scene(root);
+            stage.setTitle("Edit Profile");
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to load profile edit view: " + e.getMessage(), e);
+        }
+    }
 }

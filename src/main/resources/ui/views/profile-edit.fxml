@@ -15,9 +15,8 @@
             <padding>
                 <Insets bottom="12" left="20" right="20" top="12" />
             </padding>
-            <Label fx:id="lblTitle" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #1877f2;" text="Profile" />
+            <Label fx:id="lblTitle" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #1877f2;" text="Edit Profile" />
             <Pane HBox.hgrow="ALWAYS" />
-            <Button fx:id="btnEdit" onAction="#onEdit" style="-fx-background-radius: 20; -fx-background-color: #1877f2; -fx-text-fill: white; -fx-font-weight: bold;" text="Edit Profile" />
             <Button onAction="#onBack" style="-fx-background-radius: 20; -fx-background-color: #e4e6eb;" text="Back" />
         </HBox>
     </top>
@@ -31,7 +30,7 @@
                         <Insets top="5" bottom="5" left="5" right="5"/>
                     </padding>
 
-                    <!-- Profile Card -->
+                    <!-- Profile Edit Card -->
                     <VBox fx:id="profileCard" spacing="15" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);">
                         
                         <!-- Profile Content - Image Left, Info Right -->
@@ -43,41 +42,41 @@
                                            fitWidth="120"
                                            fitHeight="120"
                                            preserveRatio="true" />
-                           </VBox>
+                                <!-- Change Image Button -->
+                                <Button fx:id="btnChangeImage"
+                                        text="Update Image"
+                                        onAction="#onChangeImage"
+                                        style="-fx-background-color: #1877f2; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;" />
+                            </VBox>
 
-                            <!-- Profile Info -->
+                            <!-- Profile Info - Right Side -->
                             <VBox spacing="15" HBox.hgrow="ALWAYS">
                                 
                                 <!-- Name Field -->
                                 <VBox spacing="5">
-                                    <HBox spacing="4">
-                                        <Label text="Name:" style="-fx-font-weight: bold; -fx-text-fill: #65676b; -fx-font-size: 12;" />
-                                        <Label fx:id="lblName" style="-fx-font-size: 14; -fx-text-fill: #000;" text="Loading..." />
-                                    </HBox>
+                                    <Label text="Name:" style="-fx-font-weight: bold; -fx-text-fill: #65676b; -fx-font-size: 12;" />
+                                    <TextField fx:id="txtName" 
+                                               promptText="Enter your name" 
+                                               style="-fx-padding: 8; -fx-font-size: 14;" />
                                 </VBox>
 
-                                <!-- Email Field -->
-                                <VBox fx:id="emailSection" spacing="5">
-                                    <HBox spacing="4">
-                                        <Label text="Email:" style="-fx-font-weight: bold; -fx-text-fill: #65676b; -fx-font-size: 12;" />
-                                        <Label fx:id="lblEmail" style="-fx-font-size: 14; -fx-text-fill: #000;" text="Loading..." />
-                                    </HBox>
-                                </VBox>
 
                                 <!-- Bio Field -->
                                 <VBox spacing="5">
                                     <Label text="Bio" style="-fx-font-weight: bold; -fx-text-fill: #65676b; -fx-font-size: 12;" />
-                                    <TextArea fx:id="lblBio" 
-                                              style="-fx-control-inner-background: #f0f2f5; -fx-background-color: #f0f2f5; -fx-border-color: transparent; -fx-padding: 10;"
+                                    <TextArea fx:id="txtBio"
+                                              promptText="Write something about yourself..."
                                               prefHeight="80"
                                               wrapText="true"
-                                              editable="false" />
+                                              style="-fx-padding: 8; -fx-font-size: 14; -fx-control-inner-background: #f0f2f5; -fx-background-color: #f0f2f5;" />
                                 </VBox>
 
-                                <!-- Joined Date Field -->
-                                <VBox fx:id="joinedSection" spacing="5">
-                                    <Label text="Joined" style="-fx-font-weight: bold; -fx-text-fill: #65676b; -fx-font-size: 12;" />
-                                    <Label fx:id="lblJoined" style="-fx-font-size: 14; -fx-text-fill: #000;" text="Loading..." />
+                                <!-- Password Field -->
+                                <VBox spacing="5">
+                                    <Label text="New Password" style="-fx-font-weight: bold; -fx-text-fill: #65676b; -fx-font-size: 12;" />
+                                    <PasswordField fx:id="txtPassword" 
+                                                  promptText="Leave blank to keep current password" 
+                                                  style="-fx-padding: 8; -fx-font-size: 14;" />
                                 </VBox>
 
                             </VBox>
@@ -86,7 +85,14 @@
 
                         <!-- Action Buttons -->
                         <HBox fx:id="buttonBox" alignment="CENTER_RIGHT" spacing="10">
-                            
+                            <Button fx:id="btnSave"
+                                    text="Save"
+                                    onAction="#onSaveProfile"
+                                    style="-fx-background-color: #31a24c; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;" />
+                            <Button fx:id="btnCancel"
+                                    text="Cancel"
+                                    onAction="#onCancelEdit"
+                                    style="-fx-background-color: #e4e6eb; -fx-font-weight: bold; -fx-background-radius: 5;" />
                         </HBox>
 
                     </VBox>

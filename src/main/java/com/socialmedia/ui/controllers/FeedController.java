@@ -2,7 +2,6 @@ package com.socialmedia.ui.controllers;
 
 import java.sql.SQLException;
 import java.util.List;
-
 import com.socialmedia.app.Navigator;
 import com.socialmedia.services.AuthService;
 import com.socialmedia.services.LikeService;
@@ -356,12 +355,19 @@ public class FeedController {
         authService.logout();
         Navigator.goToLogin();
     }
-    @FXML private void onRefresh() {
+@FXML private void onRefresh() {
         page = 0;
         hasMore = true;
         isLoading = false;
         postsContainer.getChildren().clear();
         feedScroll.setVvalue(0);
         loadNextPage();
+    }
+    
+    @FXML
+    private void onProfile() {
+            int userId = com.socialmedia.utils.Session.getCurrentUser().getId();
+            Navigator.goToProfile(userId);
+
     }
 }

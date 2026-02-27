@@ -3,18 +3,29 @@ package com.socialmedia.services;
 import com.socialmedia.dao.ProfileDao;
 import com.socialmedia.dao.ProfileDao.ProfileData;
 import com.socialmedia.models.Profile;
-
+import com.socialmedia.models.User;
+import com.socialmedia.models.UserProfile;
+import com.socialmedia.utils.PasswordHasher;
 import java.sql.SQLException;
 
 public class ProfileService {
 
-    private final ProfileDao profileDao = new ProfileDao();
-
-    public Profile loadProfile(int userId) throws SQLException {
-        return profileDao.getByUserId(userId);
+    private final ProfileDao profileDao;
+    public ProfileService() {
+        this.profileDao = new ProfileDao();
     }
 
-    public void updateProfile(int userId, String imgPath, String bio) throws SQLException {
-        profileDao.update(userId, imgPath, bio);
+    public UserProfile getProfile(int userId) {
+        return profileDao.getProfile(userId);
+    }
+
+    public boolean updateProfile(User user, Profile profile, String newPasswordPlain) {
+        String hashedPassword = null;
+        if (newPasswordPlain != null && !newPasswordPlain.isEmpty()) {
+            hashedPassword = PasswordHasher.hash(newPasswordPlain);
+        }
+        return profileDao.updateProfile(user, profile, hashedPassword);
     }
 }
+
+   
