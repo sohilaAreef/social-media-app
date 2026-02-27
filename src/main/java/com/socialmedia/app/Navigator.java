@@ -40,4 +40,6 @@ public final class Navigator {
     public static void goToFeed() {
         goTo("/ui/views/feed.fxml", "News Feed");
     }
+
+    public static void goToProfile() { goTo("/ui/views/profile.fxml", "Profile");}
 }

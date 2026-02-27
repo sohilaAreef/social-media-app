@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="600" prefWidth="900"
+            style="-fx-background-color: #f0f2f5;"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.socialmedia.ui.controllers.ProfileController">
+
+    <!-- TOP BAR -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="12"
+              style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 10, 0, 0, 4);">
+            <padding>
+                <Insets bottom="12" left="20" right="20" top="12"/>
+            </padding>
+
+            <Label text="Profile"
+                   style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #111;"/>
+
+            <Pane HBox.hgrow="ALWAYS"/>
+
+            <Button text="Back to Feed" onAction="#onBack"
+                    style="-fx-background-radius: 16; -fx-background-color: #e4e6eb; -fx-font-weight: bold;"/>
+        </HBox>
+    </top>
+
+    <!-- CONTENT -->
+    <center>
+        <ScrollPane fitToWidth="true"
+                    style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;">
+            <VBox spacing="16">
+                <padding>
+                    <Insets top="16" right="20" bottom="20" left="20"/>
+                </padding>
+
+                <!-- Card -->
+                <VBox spacing="14"
+                      style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 16;
+                             -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.06), 8, 0, 0, 2);">
+
+                    <!-- Header row -->
+                    <HBox spacing="16" alignment="CENTER_LEFT">
+
+                        <!-- Avatar -->
+                        <StackPane prefWidth="110" prefHeight="110"
+                                   style="-fx-background-color: #f0f2f5; -fx-background-radius: 55; -fx-padding: 6;">
+                            <ImageView fx:id="profileImageView"
+                                       fitWidth="98" fitHeight="98"
+                                       preserveRatio="true"
+                            />
+                        </StackPane>
+
+                        <VBox spacing="8" HBox.hgrow="ALWAYS">
+                            <Label fx:id="nameLabel"
+                                   text="Your Name"
+                                   style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+
+                            <Label fx:id="emailLabel"
+                                   text="email@example.com"
+                                   style="-fx-text-fill: #65676b;"/>
+
+                            <HBox spacing="8">
+                                <Button text="Upload Photo" onAction="#onUploadPhoto"
+                                        style="-fx-background-radius: 16; -fx-background-color: #e4e6eb; -fx-font-weight: bold;"/>
+                                <Label fx:id="photoPathLabel"
+                                       style="-fx-text-fill: #65676b;"/>
+                            </HBox>
+                        </VBox>
+                    </HBox>
+
+                    <Separator/>
+
+                    <!-- Bio -->
+                    <VBox spacing="8">
+                        <Label text="Bio" style="-fx-font-weight: bold; -fx-text-fill: #111;"/>
+                        <TextArea fx:id="bioArea"
+                                  promptText="Write something about you..."
+                                  wrapText="true"
+                                  prefHeight="140"
+                                  style="-fx-background-color: #f0f2f5; -fx-control-inner-background: #f0f2f5; -fx-background-radius: 10; -fx-border-color: transparent;"/>
+                    </VBox>
+
+                    <!-- Actions -->
+                    <HBox alignment="CENTER_RIGHT" spacing="10">
+                        <Label fx:id="statusLabel"
+                               style="-fx-text-fill: #65676b;"/>
+                        <Button text="Save" onAction="#onSave"
+                                style="-fx-background-color: #1877f2; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 8 18;"/>
+                    </HBox>
+
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>

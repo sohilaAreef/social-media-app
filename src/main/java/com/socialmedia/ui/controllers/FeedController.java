@@ -336,7 +336,7 @@ public class FeedController {
 
     @FXML private void goToProfile() {
 
-        System.out.println("Chat clicked");
+        Navigator.goToProfile();
     }
     @FXML private void goToFriends() {
 

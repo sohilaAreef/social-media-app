@@ -42,28 +42,34 @@
 
     <!-- CENTER CONTENT -->
     <center>
-        <ScrollPane fx:id="feedScroll" fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;">
-            <content>
-                <VBox fillWidth="true" spacing="16">
-                    <padding>
-                        <Insets bottom="20" left="20" right="20" top="16" />
-                    </padding>
+        <ScrollPane fx:id="feedScroll" fitToWidth="true"
+                    style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;">
+            <VBox spacing="16">
+                <padding>
+                    <Insets bottom="20" left="20" right="20" top="16"/>
+                </padding>
 
-                    <!-- CREATE POST: full width -->
-                    <VBox maxWidth="1.7976931348623157E308" prefHeight="126.0" prefWidth="855.0" spacing="10" style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);" VBox.vgrow="NEVER">
-                        <Label style="-fx-font-weight: bold; -fx-text-fill: #65676b;" text="Create a New Post" />
+                <!-- CREATE POST: full width -->
+                <VBox maxWidth="1.7976931348623157E308" prefHeight="126.0" prefWidth="855.0" spacing="10"
+                      style="-fx-background-color: white; -fx-padding: 15; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);"
+                      VBox.vgrow="NEVER">
+                    <Label style="-fx-font-weight: bold; -fx-text-fill: #65676b;" text="Create a New Post"/>
 
-                        <TextArea fx:id="postContentArea" prefHeight="108.0" prefWidth="825.0" promptText="What's on your mind?...." style="-fx-background-color: #f0f2f5; -fx-control-inner-background: #f0f2f5; -fx-background-radius: 8; -fx-border-color: transparent;" wrapText="true" />
+                    <TextArea fx:id="postContentArea" prefHeight="108.0" prefWidth="825.0"
+                              promptText="What's on your mind?...."
+                              style="-fx-background-color: #f0f2f5; -fx-control-inner-background: #f0f2f5; -fx-background-radius: 8; -fx-border-color: transparent;"
+                              wrapText="true"/>
 
-                        <HBox alignment="CENTER_RIGHT">
-                            <Button onAction="#handlePostAction" style="-fx-background-color: #1877f2; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 8 18;" text="Post" />
-                        </HBox>
-                    </VBox>
-
-                    <!-- POSTS CONTAINER: full width -->
-                    <VBox fx:id="postsContainer" fillWidth="true" maxWidth="1.7976931348623157E308" spacing="12" />
+                    <HBox alignment="CENTER_RIGHT">
+                        <Button onAction="#handlePostAction"
+                                style="-fx-background-color: #1877f2; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 8 18;"
+                                text="Post"/>
+                    </HBox>
                 </VBox>
-            </content>
+
+                <!-- POSTS CONTAINER: full width -->
+                <VBox fx:id="postsContainer" maxWidth="1.7976931348623157E308" spacing="12"/>
+            </VBox>
         </ScrollPane>
     </center>
 

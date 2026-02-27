@@ -18,6 +18,12 @@ public class Profile {
         this.userId = userId;
     }
 
+    public Profile(int userId, Object o, String s) {
+        this.userId = userId;
+        this.img = o.toString();
+        this.bio = s;
+    }
+
     public int getUserId() {
         return userId;
     }
