@@ -60,4 +60,22 @@ public class UserDao {
             throw new RuntimeException(e);
         }
     }
+
+    public User findById(int id) {
+        String sql = "SELECT id, name, email FROM `user` WHERE id = ? LIMIT 1";
+        try (Connection con = DatabaseConfig.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (!rs.next()) return null;
+
+            User u = new User(rs.getString("email"), rs.getString("name"), "");
+            u.setId(rs.getInt("id"));
+            return u;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

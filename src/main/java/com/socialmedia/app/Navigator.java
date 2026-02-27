@@ -1,5 +1,6 @@
 package com.socialmedia.app;
 
+import com.socialmedia.utils.Session;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -42,4 +43,8 @@ public final class Navigator {
     }
 
     public static void goToProfile() { goTo("/ui/views/profile.fxml", "Profile");}
+
+    public static void goToUserProfile(int userId) {
+        Session.setViewedUserId(userId);
+        goTo("/ui/views/user_profile.fxml" , "User Profile");}
 }
