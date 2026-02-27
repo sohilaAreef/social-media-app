@@ -1,5 +1,6 @@
 package com.socialmedia.app;
 
+import com.socialmedia.utils.Session;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -74,4 +75,8 @@ public final class Navigator {
             throw new RuntimeException("Failed to load profile edit view: " + e.getMessage(), e);
         }
     }
+
+    public static void goToUserProfile(int userId) {
+        Session.setViewedUserId(userId);
+        goTo("/ui/views/user_profile.fxml" , "User Profile");}
 }

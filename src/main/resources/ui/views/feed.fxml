@@ -26,10 +26,10 @@
                 <Button onAction="#goToChat" style="-fx-background-radius: 16; -fx-background-color: #e4e6eb;" text="Chat" />
                 <MenuButton style="-fx-background-radius: 16; -fx-background-color: #e4e6eb; -fx-font-weight: bold;" text="☰">
                     <items>
+                        <MenuItem onAction="#onRefresh" text="Refresh" />
+                        <SeparatorMenuItem />
                         <MenuItem onAction="#onProfile" text="Profile" />
                         <MenuItem onAction="#goToFriends" text="Friends" />
-                        <SeparatorMenuItem />
-                        <MenuItem onAction="#onRefresh" text="Refresh" />
                         <SeparatorMenuItem />
                         <MenuItem onAction="#onLogout" text="Logout" />
                     </items>

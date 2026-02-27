@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="600" prefWidth="900"
+            style="-fx-background-color: #f0f2f5;"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.socialmedia.ui.controllers.UserProfileController">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="12"
+              style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 10, 0, 0, 4);">
+            <padding><Insets bottom="12" left="20" right="20" top="12"/></padding>
+
+            <Label text="User Profile" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+            <Pane HBox.hgrow="ALWAYS"/>
+
+            <Button text="Back" onAction="#onBack"
+                    style="-fx-background-radius: 16; -fx-background-color: #e4e6eb; -fx-font-weight: bold;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="16" fillWidth="true">
+            <padding><Insets top="16" right="20" bottom="20" left="20"/></padding>
+
+            <VBox spacing="14"
+                  style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 16;
+                         -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.06), 8, 0, 0, 2);">
+
+                <HBox spacing="16" alignment="CENTER_LEFT">
+                    <StackPane prefWidth="110" prefHeight="110"
+                               style="-fx-background-color: #f0f2f5; -fx-background-radius: 55; -fx-padding: 6;">
+                        <ImageView fx:id="profileImageView" fitWidth="98" fitHeight="98" preserveRatio="true" smooth="true"/>
+                    </StackPane>
+
+                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                        <Label fx:id="nameLabel" text="Name" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+                        <Label fx:id="bioLabel" text="" style="-fx-text-fill: #65676b;"/>
+                        <Label fx:id="statusLabel" text="" style="-fx-text-fill: #65676b;"/>
+                    </VBox>
+
+                    <VBox spacing="8" alignment="CENTER_RIGHT">
+                        <Button fx:id="friendBtn" text="Add Friend" onAction="#onFriendAction"
+                                style="-fx-background-radius: 10; -fx-padding: 8 16; -fx-font-weight: bold;"/>
+                        <!-- لو INCOMING_PENDING هنظهر Accept/Decline -->
+                        <HBox fx:id="incomingBox" spacing="8" visible="false" managed="false">
+                            <Button text="Accept" onAction="#onAccept" style="-fx-background-color: #1877f2; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10;"/>
+                            <Button text="Decline" onAction="#onDecline" style="-fx-background-color: #e4e6eb; -fx-font-weight: bold; -fx-background-radius: 10;"/>
+                        </HBox>
+                    </VBox>
+                </HBox>
+
+            </VBox>
+        </VBox>
+    </center>
+
+</BorderPane>
