@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.socialmedia.config.DatabaseConfig;
 import com.socialmedia.models.Post;
 import com.socialmedia.models.FeedPost;
@@ -13,12 +12,13 @@ import com.socialmedia.models.FeedPost;
 public class PostDao {
    
     public void createPost(Post post) throws SQLException {
-        String sql = "INSERT INTO `post`(user_id, content, img) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO `post`(user_id, content, img, privacy) VALUES (?, ?, ?, ?)";
         try (Connection con = DatabaseConfig.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, post.getUserId());
             ps.setString(2, post.getContent());
             ps.setString(3, post.getImg());
+            ps.setString(4, post.getPrivacy());
             ps.executeUpdate();
         }
     }

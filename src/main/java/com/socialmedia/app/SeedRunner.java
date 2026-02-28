@@ -75,6 +75,8 @@ public class SeedRunner {
                     user_id INT,
                     FOREIGN KEY (user_id) REFERENCES `user`(id) ON DELETE CASCADE
                 );
+                ALTER TABLE `post`
+                ADD COLUMN privacy ENUM('PUBLIC','FRIENDS','PRIVATE') NOT NULL DEFAULT 'PUBLIC';
                 """,
                 """
                 CREATE TABLE IF NOT EXISTS `comment`(
