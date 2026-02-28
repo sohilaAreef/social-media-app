@@ -36,9 +36,6 @@ public class FeedController {
     @FXML
     private TextField searchField;
 
-    @FXML
-    private ComboBox<String> privacyBox;
-
     private final FeedService feedService = new FeedService();
     private final PostService postService = new PostService();
     private final AuthService authService = new AuthService();
@@ -66,7 +63,6 @@ public class FeedController {
     @FXML
     private void handlePostAction() {
         String content = postContentArea.getText();
-        String privacy = privacyBox.getValue();
 
         if (content == null || content.trim().isEmpty()) {
             System.out.println("Warning: Cannot publish an empty post.");
@@ -78,7 +74,7 @@ public class FeedController {
             if (Session.getCurrentUser() != null) {
                 int currentUserId = Session.getCurrentUser().getId();
 
-                postService.addNewPost(currentUserId, content, null, privacy);
+                postService.addNewPost(currentUserId, content, null);
 
                 postContentArea.clear();
                 System.out.println("Post published successfully!");

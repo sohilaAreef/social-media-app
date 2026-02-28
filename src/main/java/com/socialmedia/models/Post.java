@@ -8,10 +8,6 @@ public class Post {
     private String content;
     private String img;
     private Timestamp createdAt;
-    private String privacy; // "PUBLIC" | "FRIENDS" | "PRIVATE"
-
-    public String getPrivacy() { return privacy; }
-    public void setPrivacy(String privacy) { this.privacy = privacy; }
 
     public Post() {
     }
