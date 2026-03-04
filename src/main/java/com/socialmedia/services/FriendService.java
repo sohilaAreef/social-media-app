@@ -9,6 +9,7 @@ import java.util.List;
 public class FriendService {
 
     private final FriendDao friendDao = new FriendDao();
+    private final NotificationService notificationService = new NotificationService();
 
     public FriendStatus getStatus(int currentUserId, int otherUserId) throws SQLException {
         FriendDao.FriendStatusRow row = friendDao.findRelationship(currentUserId, otherUserId);
@@ -30,6 +31,8 @@ public class FriendService {
 
     public void addFriend(int currentUserId, int otherUserId) throws SQLException {
         friendDao.sendRequest(currentUserId, otherUserId);
+        // Send notification for friend request
+        notificationService.sendNotification(currentUserId, otherUserId, otherUserId, "FRIEND_REQUEST");
     }
 
     public void cancelPending(int currentUserId, int otherUserId) throws SQLException {
@@ -39,6 +42,8 @@ public class FriendService {
     public void acceptIncoming(int currentUserId, int otherUserId) throws SQLException {
         // incoming means other -> current
         friendDao.acceptRequest(otherUserId, currentUserId);
+        // Send notification that friend request was accepted
+        notificationService.sendNotification(currentUserId, otherUserId, otherUserId, "FRIEND_ACCEPTED");
     }
 
     public void declineIncoming(int currentUserId, int otherUserId) throws SQLException {

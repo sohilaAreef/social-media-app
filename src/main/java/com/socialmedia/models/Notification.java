@@ -4,19 +4,23 @@ import java.sql.Timestamp;
 
 public class Notification {
     private int id;
-    private int userId;
-    private String message;
-    private boolean read;
+    private int senderId;
+    private int receiverId;
+    private int referenceId;
+    private String type;
+    private boolean isRead;
     private Timestamp createdAt;
 
     public Notification() {
     }
 
-    public Notification(int id, int userId, String message, boolean read, Timestamp createdAt) {
+    public Notification(int id, int senderId, int receiverId, int referenceId, String type, boolean isRead, Timestamp createdAt) {
         this.id = id;
-        this.userId = userId;
-        this.message = message;
-        this.read = read;
+        this.senderId = senderId;
+        this.receiverId = receiverId;
+        this.referenceId = referenceId;
+        this.type = type;
+        this.isRead = isRead;
         this.createdAt = createdAt;
     }
 
@@ -28,28 +32,42 @@ public class Notification {
         this.id = id;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getSenderId() {
+        return senderId;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setSenderId(int senderId) {
+        this.senderId = senderId;
+    }
+    public int getReceiverId() {
+        return receiverId;
     }
 
-    public String getMessage() {
-        return message;
+    public void setReceiverId(int receiverId) {
+        this.receiverId = receiverId;
+    }
+    public int getReferenceId() {
+        return referenceId;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setReferenceId(int referenceId) {
+        this.referenceId = referenceId;
     }
 
-    public boolean isRead() {
-        return read;
+    public String getType() {
+        return type;
     }
 
-    public void setRead(boolean read) {
-        this.read = read;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public boolean isIsRead() {
+        return isRead;
+    }
+
+    public void setIsRead(boolean isRead) {
+        this.isRead = isRead;
     }
 
     public Timestamp getCreatedAt() {

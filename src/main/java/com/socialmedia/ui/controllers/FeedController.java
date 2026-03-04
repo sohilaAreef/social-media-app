@@ -6,6 +6,7 @@ import com.socialmedia.app.Navigator;
 import com.socialmedia.dao.FriendDao;
 import com.socialmedia.services.*;
 import com.socialmedia.models.Comment;
+import com.socialmedia.models.Notification;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -13,6 +14,7 @@ import javafx.scene.Scene;
 import com.socialmedia.utils.Session;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.geometry.Side;
 import com.socialmedia.models.FeedPost;
 import com.socialmedia.utils.TimeAgo;
 import javafx.application.Platform;
@@ -36,12 +38,19 @@ public class FeedController {
     @FXML
     private TextField searchField;
 
+    @FXML
+    private Button notificationBtn;
+
+    @FXML
+    private Label notificationBadge;
+
     private final FeedService feedService = new FeedService();
     private final PostService postService = new PostService();
     private final AuthService authService = new AuthService();
     private final LikeService likeService = new LikeService();
     private final CommentService commentService = new CommentService();
     private final FriendService friendService = new FriendService();
+    private final NotificationService notificationService = new NotificationService();
 
     private int page = 0;
     private final int pageSize = 10;
@@ -51,6 +60,7 @@ public class FeedController {
     @FXML
     public void initialize() {
         loadNextPage();
+        loadNotificationCount();
 
         feedScroll.vvalueProperty().addListener((obs, oldV, newV) -> {
             if (!hasMore || isLoading) return;
@@ -609,5 +619,157 @@ public class FeedController {
             int userId = com.socialmedia.utils.Session.getCurrentUser().getId();
             Navigator.goToProfile(userId);
 
+    }
+    
+    private void loadNotificationCount() {
+        new Thread(() -> {
+            try {
+                int userId = Session.getCurrentUser().getId();
+                int unreadCount = notificationService.getUnreadCount(userId);
+                Platform.runLater(() -> {
+                    notificationBadge.setText(String.valueOf(unreadCount));
+                    if (unreadCount > 0) {
+                        notificationBadge.setVisible(true);
+                    } else {
+                        notificationBadge.setVisible(false);
+                    }
+                });
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+    
+    @FXML
+    private void onNotifications() {
+        openNotificationsMenu();
+    }
+    
+    private void openNotificationsMenu() {
+        ContextMenu menu = new ContextMenu();
+        menu.setStyle("-fx-font-size: 11px; -fx-padding: 0;");
+        
+        // Show loading item first
+        MenuItem loadingItem = new MenuItem("Loading...");
+        loadingItem.setDisable(true);
+        menu.getItems().add(loadingItem);
+        
+        // Show menu immediately
+        menu.show(notificationBtn, Side.BOTTOM, 10, 0);
+        
+        // Load notifications in background
+        new Thread(() -> {
+            try {
+                int userId = Session.getCurrentUser().getId();
+                java.util.List<Notification> notifications = notificationService.getAllNotifications(userId);
+                
+                System.out.println("[DEBUG] Loaded " + notifications.size() + " notifications");
+                
+                Platform.runLater(() -> {
+                    menu.getItems().clear();
+                    
+                    if (notifications.isEmpty()) {
+                        Label emptyLabel = new Label("No notifications");
+                        emptyLabel.setStyle("-fx-text-fill: #65676b; -fx-padding: 10;");
+                        CustomMenuItem emptyItem = new CustomMenuItem(emptyLabel);
+                        emptyItem.setHideOnClick(false);
+                        menu.getItems().add(emptyItem);
+                    } else {
+                        for (int i = 0; i < notifications.size(); i++) {
+                            Notification notif = notifications.get(i);
+                            System.out.println("[DEBUG] Adding notification " + (i + 1) + ": " + notif.getType());
+                            CustomMenuItem item = createNotificationMenuItem(notif, menu);
+                            menu.getItems().add(item);
+                            
+                            // Add separator between items (except after last item)
+                            if (i < notifications.size() - 1) {
+                                menu.getItems().add(new SeparatorMenuItem());
+                            }
+                        }
+                    }
+                    // Refresh menu size
+                    menu.getScene().getWindow().sizeToScene();
+                });
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.err.println("[ERROR] Loading notifications failed: " + e.getMessage());
+                Platform.runLater(() -> {
+                    menu.getItems().clear();
+                    Label errorLabel = new Label("Failed to load notifications");
+                    errorLabel.setStyle("-fx-text-fill: #d32f2f; -fx-padding: 10;");
+                    CustomMenuItem errorItem = new CustomMenuItem(errorLabel);
+                    errorItem.setHideOnClick(false);
+                    menu.getItems().add(errorItem);
+                });
+            }
+        }).start();
+    }
+    
+    private CustomMenuItem createNotificationMenuItem(Notification notif, ContextMenu menu) {
+        VBox content = new VBox(2);
+        content.setPrefWidth(300);
+        content.setPadding(new Insets(8));
+        content.setStyle("-fx-background-color: " + (notif.isIsRead() ? "#ffffff" : "#e7f3ff") + ";");
+        
+        Label typeLabel = new Label(getNotificationLabel(notif));
+        typeLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 12; -fx-text-fill: #1877f2;");
+        typeLabel.setWrapText(true);
+        
+        Label timeLabel = new Label(com.socialmedia.utils.TimeAgo.from(notif.getCreatedAt()));
+        timeLabel.setStyle("-fx-text-fill: #65676b; -fx-font-size: 10;");
+        
+        content.getChildren().addAll(typeLabel, timeLabel);
+        
+        CustomMenuItem item = new CustomMenuItem(content);
+        item.setHideOnClick(false);
+        
+        content.setOnMouseClicked(e -> {
+            try {
+                notificationService.markAsRead(notif.getId());
+                loadNotificationCount();
+                menu.hide();
+                // Navigate based on notification type
+                navigateFromNotification(notif);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        });
+        
+        content.setOnMouseEntered(e -> content.setStyle("-fx-background-color: #f0f2f5;"));
+        content.setOnMouseExited(e -> content.setStyle("-fx-background-color: " + (notif.isIsRead() ? "#ffffff" : "#e7f3ff") + ";"));
+        content.setCursor(javafx.scene.Cursor.HAND);
+        
+        return item;
+    }
+    
+    private String getNotificationLabel(Notification notif) {
+        String type = notif.getType().toLowerCase();
+        if (type.contains("liked")) {
+            return "👍 Someone liked your post";
+        } else if (type.contains("commented")) {
+            return "💬 Someone commented on your post";
+        } else if (type.contains("friend")) {
+            return "👥 New friend request";
+        } else if (type.contains("accepted")) {
+            return "✅ Friend request accepted";
+        } else {
+            return notif.getType();
+        }
+    }
+    
+    private void navigateFromNotification(Notification notif) {
+        String type = notif.getType().toLowerCase();
+        
+        if (type.contains("friend") || type.contains("accepted")) {
+            // Navigate to the sender's profile
+            Navigator.goToUserProfile(notif.getSenderId());
+        } else if (type.contains("liked") || type.contains("commented")) {
+            // Navigate to the post (reference_id is the post id)
+            // For now, refresh the feed - ideally we'd scroll to the specific post
+            onRefresh();
+            System.out.println("[Navigation] Post ID: " + notif.getReferenceId());
+        } else {
+            System.out.println("[Navigation] Unknown notification type: " + notif.getType());
+        }
     }
 }

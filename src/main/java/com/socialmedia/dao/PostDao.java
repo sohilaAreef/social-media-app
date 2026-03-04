@@ -63,4 +63,26 @@ public class PostDao {
 
         return posts;
     }
+
+    public Post getPost(int postId) throws SQLException {
+        String sql = "SELECT id, user_id, content, img, created_at FROM `post` WHERE id = ?";
+        try (Connection con = DatabaseConfig.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, postId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Post post = new Post();
+                    post.setId(rs.getInt("id"));
+                    post.setUserId(rs.getInt("user_id"));
+                    post.setContent(rs.getString("content"));
+                    post.setImg(rs.getString("img"));
+                    post.setCreatedAt(rs.getTimestamp("created_at"));
+                    return post;
+                }
+            }
+        }
+        return null;
+    }
 }
