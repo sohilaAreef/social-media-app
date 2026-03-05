@@ -2,8 +2,29 @@
 
 A Java-based social media application scaffold using **JavaFX**, **Maven**, and **MySQL**.
 
+**This Project is a part for DEBI Software Development Program "just a checkpoint application."**
+
 ---
 
+## Team Members:
+
+- Alaa Reda Farouq Saleh | WA | SD2614030.
+- Ahmed Ehab Abdelazeem Bahnasey | WA | SD2614028.
+- Sohila Arif Mohamed Admeen | MA | SD2614024.
+---
+## Features
+
+- Authentication (Login/Register)
+- User profiles
+- Posts with images
+- Likes & comments
+- Friend system
+- Notifications
+- Privacy settings
+- Real-time chat using sockets
+- Search users and posts
+
+---
 ## 🛠 Tech Stack
 
 - Java 17
@@ -22,58 +43,97 @@ Main Maven module:
 
 ```text
 socialmedia/
-+-- pom.xml
-+-- src/
-¦   +-- main/
-¦   ¦   +-- java/
-¦   ¦   ¦   +-- com/
-¦   ¦   ¦       +-- socialmedia/
-¦   ¦   ¦           +-- app/
-¦   ¦   ¦           ¦   +-- Main.java
-¦   ¦   ¦           ¦   +-- Navigator.java
-¦   ¦   ¦           ¦   +-- DbPing.java
-¦   ¦   ¦           ¦   +-- SeedRunner.java
-¦   ¦   ¦           +-- ui/
-¦   ¦   ¦           ¦   +-- controllers/
-¦   ¦   ¦           ¦       +-- LoginController.java
-¦   ¦   ¦           ¦       +-- RegisterController.java
-¦   ¦   ¦           ¦       +-- FeedController.java
-¦   ¦   ¦           +-- models/
-¦   ¦   ¦           ¦   +-- User.java
-¦   ¦   ¦           ¦   +-- Profile.java
-¦   ¦   ¦           ¦   +-- Post.java
-¦   ¦   ¦           ¦   +-- Comment.java
-¦   ¦   ¦           ¦   +-- Like.java
-¦   ¦   ¦           ¦   +-- Notification.java
-¦   ¦   ¦           ¦   +-- Friend.java
-¦   ¦   ¦           +-- services/
-¦   ¦   ¦           ¦   +-- AuthService.java
-¦   ¦   ¦           ¦   +-- UserService.java
-¦   ¦   ¦           ¦   +-- PostService.java
-¦   ¦   ¦           ¦   +-- NotificationService.java
-¦   ¦   ¦           +-- dao/
-¦   ¦   ¦           ¦   +-- UserDao.java
-¦   ¦   ¦           ¦   +-- PostDao.java
-¦   ¦   ¦           ¦   +-- NotificationDao.java
-¦   ¦   ¦           ¦   +-- ProfileDao.java
-¦   ¦   ¦           +-- utils/
-¦   ¦   ¦           ¦   +-- PasswordHasher.java
-¦   ¦   ¦           ¦   +-- Validator.java
-¦   ¦   ¦           ¦   +-- Session.java
-¦   ¦   ¦           +-- config/
-¦   ¦   ¦               +-- DatabaseConfig.java
-¦   ¦   +-- resources/
-¦   ¦       +-- styles/
-¦   ¦       ¦   +-- main.css
-¦   ¦       +-- images/
-¦   ¦       ¦   +-- default-avatar.png
-¦   ¦       +-- ui/
-¦   ¦       ¦   +-- views/
-¦   ¦       ¦       +-- login.fxml
-¦   ¦       ¦       +-- register.fxml
-¦   ¦       ¦       +-- feed.fxml
-¦   ¦       +-- application.properties.example
+│
+├── pom.xml
+│
+├── src/
+│   └── main/
+│
+│       ├── java/
+│       │   └── com/
+│       │       └── socialmedia/
+│       │
+│       │           ├── app/
+│       │           │   ├── Main.java
+│       │           │   ├── Navigator.java
+│       │           │   ├── DbPing.java
+│       │           │   └── SeedRunner.java
+│       │
+│       │           ├── config/
+│       │           │   └── DatabaseConfig.java
+│       │
+│       │           ├── models/
+│       │           │   ├── User.java
+│       │           │   ├── Profile.java
+│       │           │   ├── Post.java
+│       │           │   ├── FeedPost.java
+│       │           │   ├── Comment.java
+│       │           │   ├── Like.java
+│       │           │   ├── Friend.java
+│       │           │   ├── Notification.java
+│       │           │   └── Message.java
+│       │
+│       │           ├── dao/
+│       │           │   ├── UserDao.java
+│       │           │   ├── ProfileDao.java
+│       │           │   ├── PostDao.java
+│       │           │   ├── CommentDao.java
+│       │           │   ├── LikeDao.java
+│       │           │   ├── FriendDao.java
+│       │           │   ├── NotificationDao.java
+│       │           │   └── ChatDao.java
+│       │
+│       │           ├── services/
+│       │           │   ├── AuthService.java
+│       │           │   ├── UserService.java
+│       │           │   ├── ProfileService.java
+│       │           │   ├── PostService.java
+│       │           │   ├── CommentService.java
+│       │           │   ├── LikeService.java
+│       │           │   ├── FriendService.java
+│       │           │   ├── NotificationService.java
+│       │           │   └── ChatService.java
+│       │
+│       │           ├── realtime/
+│       │           │   ├── ChatServer.java
+│       │           │   └── ChatClient.java
+│       │
+│       │           ├── ui/
+│       │           │   └── controllers/
+│       │           │       ├── LoginController.java
+│       │           │       ├── RegisterController.java
+│       │           │       ├── FeedController.java
+│       │           │       ├── ProfileController.java
+│       │           │       ├── UserProfileController.java
+│       │           │       └── ChatController.java
+│       │
+│       │           └── utils/
+│       │               ├── PasswordHasher.java
+│       │               ├── Validator.java
+│       │               ├── Session.java
+│       │               └── TimeAgo.java
+│
+│
+│       └── resources/
+│           │
+│           ├── styles/
+│           │   └── main.css
+│           │
+│           ├── images/
+│           │   └── default-avatar.png
+│           │
+│           ├── ui/
+│           │   └── views/
+│           │       ├── login.fxml
+│           │       ├── register.fxml
+│           │       ├── feed.fxml
+│           │       ├── profile.fxml
+│           │       ├── user-profile.fxml
+│           │       └── chat.fxml
+│           │
+│           └── application.properties.example
 ```
+---
 ## Layer Responsibilities
 - `app`: Entry point and screen navigation.
 - `ui/controllers`: JavaFX controller classes.
@@ -94,6 +154,8 @@ socialmedia/
 - `post` – user posts
 - `comment` – comments on posts
 - `likes` – likes on posts
+- `message` – RTC messages 
+- `notification` – users notifications
 
 All tables are connected using foreign keys with cascade rules.
 
