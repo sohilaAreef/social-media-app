@@ -19,4 +19,8 @@ public class PostService {
 
         postDao.createPost(post);
     }
+
+    public boolean deletePost(int postId, int userId) throws SQLException {
+        return postDao.deletePost(postId, userId);
+    }
 }

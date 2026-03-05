@@ -13,4 +13,13 @@ public class FeedService {
         int offset = page * pageSize;
         return postDao.getFeedPosts(pageSize, offset);
     }
+    public List<FeedPost> loadMainFeedPage(int viewerId, int page, int pageSize) throws SQLException {
+        int offset = page * pageSize;
+        return postDao.getMainFeed(viewerId, pageSize, offset);
+    }
+    public List<FeedPost> loadProfileFeedPage(int profileUserId, int viewerUserId, int page, int pageSize) throws SQLException {
+        int offset = page * pageSize;
+        boolean isFriend = false;
+        return postDao.getUserPostsForViewer(profileUserId, viewerUserId, isFriend, pageSize, offset);
+    }
 }

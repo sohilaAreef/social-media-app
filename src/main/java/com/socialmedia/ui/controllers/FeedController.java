@@ -53,6 +53,19 @@ public class FeedController {
 
     @FXML
     public void initialize() {
+
+        if (Session.getCurrentUser() == null) {
+            Navigator.goToLogin();
+            return;
+        }
+
+        if (privacyBox != null) {
+            if (privacyBox.getItems().isEmpty()) {
+                privacyBox.getItems().addAll("PUBLIC", "FRIENDS", "PRIVATE");
+            }
+            if (privacyBox.getValue() == null) privacyBox.setValue("PUBLIC");
+        }
+
         loadNextPage();
 
         feedScroll.vvalueProperty().addListener((obs, oldV, newV) -> {
@@ -98,7 +111,8 @@ public class FeedController {
 
         new Thread(() -> {
             try {
-                List<FeedPost> posts = feedService.loadPage(page, pageSize);
+                int viewerId = Session.getCurrentUser().getId();
+                List<FeedPost> posts = feedService.loadMainFeedPage(viewerId, page, pageSize);
 
                 Platform.runLater(() -> {
                     if (posts.isEmpty()) {
@@ -578,7 +592,7 @@ public class FeedController {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(content);
-        return alert.showAndWait().filter(btn -> btn == ButtonType.OK).isEmpty();
+        return alert.showAndWait().filter(btn -> btn == ButtonType.OK).isPresent();
     }
     
     @FXML private void goToFriends() {
