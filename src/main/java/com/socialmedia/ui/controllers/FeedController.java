@@ -7,6 +7,7 @@ import com.socialmedia.dao.FriendDao;
 import com.socialmedia.services.*;
 import com.socialmedia.models.Comment;
 import com.socialmedia.models.Notification;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -492,6 +493,7 @@ public class FeedController {
             row.setStyle("-fx-background-color: #f0f2f5; -fx-background-radius: 10;");
 
             Label name = clickableName(u.name(), u.id());
+
             Pane spacer = new Pane();
             HBox.setHgrow(spacer, Priority.ALWAYS);
 
@@ -499,8 +501,32 @@ public class FeedController {
             view.setStyle("-fx-background-radius: 10; -fx-background-color: #e4e6eb; -fx-font-weight: bold;");
             view.setOnAction(e -> Navigator.goToUserProfile(u.id()));
 
-            row.getChildren().addAll(name, spacer, view);
+            Button msg = new Button("Message");
+            msg.setStyle("-fx-background-radius: 10; -fx-background-color: #1877f2; -fx-text-fill: white; -fx-font-weight: bold;");
+            msg.setOnAction(e -> openChat(u.id(), u.name())); // ✅ أهم سطر
+
+            row.getChildren().addAll(name, spacer, view, msg);
             box.getChildren().add(row);
+        }
+    }
+
+    private void openChat(int userId, String name) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/views/chat.fxml"));
+
+            Stage stage = new Stage();
+            stage.setTitle("Chat - " + name);
+            stage.initModality(Modality.NONE);
+
+            Scene scene = new Scene(loader.load(), 420, 500);
+            stage.setScene(scene);
+
+            ChatController controller = loader.getController();
+            controller.initChat(userId, name);
+
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

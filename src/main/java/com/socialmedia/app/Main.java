@@ -11,6 +11,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+        new Thread(new com.socialmedia.utils.ChatServer(9090)).start();
         launch();
     }
 }

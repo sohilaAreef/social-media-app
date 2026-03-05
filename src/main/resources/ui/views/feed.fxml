@@ -27,8 +27,6 @@
                     <Button fx:id="notificationBtn" onAction="#onNotifications" style="-fx-background-radius: 12; -fx-background-color: #e4e6eb; -fx-font-size: 12px; prefWidth:28; prefHeight:28" text="🔔" />
                     <Label fx:id="notificationBadge" style="-fx-text-fill: white; -fx-font-size: 8px; -fx-font-weight: bold; -fx-background-color: #f02849; -fx-background-radius: 6; -fx-padding: 1 3; -fx-alignment: center;" text="0" StackPane.alignment="TOP_RIGHT" />
                 </StackPane>
-
-                <Button onAction="#goToChat" style="-fx-background-radius: 16; -fx-background-color: #e4e6eb;" text="Chat" />
                 <MenuButton style="-fx-background-radius: 16; -fx-background-color: #e4e6eb; -fx-font-weight: bold;" text="☰">
                     <items>
                         <MenuItem onAction="#onRefresh" text="Refresh" />

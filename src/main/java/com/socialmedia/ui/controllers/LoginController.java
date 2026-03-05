@@ -3,6 +3,7 @@ package com.socialmedia.ui.controllers;
 import com.socialmedia.models.User;
 import com.socialmedia.services.AuthService;
 import com.socialmedia.app.Navigator;
+import com.socialmedia.utils.ChatClient;
 import com.socialmedia.utils.Session;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -20,6 +21,9 @@ public class LoginController {
         try {
             User user = AuthService.login(emailField.getText(), passwordField.getText());
             Session.setCurrentUser(user);
+            ChatClient client = new ChatClient();
+            client.connect(user.getId());
+            Session.setChatClient(client);
 
             Navigator.goToFeed();
         } catch (IllegalArgumentException ex) {

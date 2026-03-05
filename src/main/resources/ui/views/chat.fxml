@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.socialmedia.ui.controllers.ChatController"
+      spacing="10"
+      prefWidth="420"
+      prefHeight="500"
+      style="-fx-background-color: white;">
+
+    <!-- Header -->
+    <HBox spacing="10"
+          style="-fx-background-color: #f0f2f5; -fx-padding: 10;">
+        <Label fx:id="lblName"
+               text="Chat"
+               style="-fx-font-size: 16; -fx-font-weight: bold;"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button text="X" onAction="#onClose"
+                style="-fx-background-color: transparent;"/>
+    </HBox>
+
+    <!-- Messages -->
+    <ScrollPane fx:id="scrollPane"
+                fitToWidth="true"
+                VBox.vgrow="ALWAYS"
+                style="-fx-background-color: transparent;">
+
+        <content>
+            <VBox fx:id="messagesBox"
+                  spacing="8"
+                  style="-fx-padding: 10;"/>
+        </content>
+
+    </ScrollPane>
+
+    <!-- Input -->
+    <HBox spacing="8"
+          style="-fx-padding: 10;">
+
+        <TextField fx:id="txtMessage"
+                   HBox.hgrow="ALWAYS"
+                   promptText="Type a message..."/>
+
+        <Button text="Send"
+                onAction="#onSend"
+                style="-fx-background-color: #1877f2; -fx-text-fill: white;"/>
+
+    </HBox>
+
+</VBox>
