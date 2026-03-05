@@ -22,7 +22,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import java.util.List;
 import javafx.stage.FileChooser;
-
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import java.io.File;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -162,39 +163,50 @@ public class ProfileController {
         VBox card = new VBox(8);
         card.setPadding(new Insets(12));
         card.setStyle("""
-            -fx-background-color: white;
-            -fx-background-radius: 10;
-            -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.06), 8, 0, 0, 2);
-        """);
+        -fx-background-color: white;
+        -fx-background-radius: 10;
+        -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.06), 8, 0, 0, 2);
+    """);
+
+        // -------- Header (name + time) + 3 dots menu --------
         Label name = new Label(post.getUserName());
         name.setStyle("-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: #111;");
-
 
         Label time = new Label(TimeAgo.from(post.getCreatedAt()));
         time.setStyle("-fx-text-fill: #65676b; -fx-font-size: 11;");
 
-        VBox header = new VBox(2, name, time);
+        VBox leftHeader = new VBox(2, name, time);
 
+        // 3 dots menu
+        MenuItem deleteItem = new MenuItem("Delete post");
+        deleteItem.setOnAction(e -> onDeletePost(post.getPostId(), card));
+
+        MenuButton menuBtn = new MenuButton("⋯");
+        menuBtn.getItems().add(deleteItem);
+        menuBtn.setStyle("""
+        -fx-background-color: transparent;
+        -fx-font-size: 18;
+        -fx-text-fill: #65676b;
+        -fx-font-weight: bold;
+    """);
+        menuBtn.setMinWidth(28);
+        menuBtn.setPrefWidth(28);
+
+        Pane spacer = new Pane();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        HBox headerRow = new HBox(8, leftHeader, spacer, menuBtn);
+        headerRow.setAlignment(javafx.geometry.Pos.TOP_LEFT);
+
+        // -------- Content --------
         Label content = new Label(post.getContent() == null ? "" : post.getContent());
         content.setWrapText(true);
+        content.setMaxWidth(Double.MAX_VALUE);
         content.setStyle("-fx-font-size: 13; -fx-text-fill: #111;");
 
-        card.getChildren().addAll(header, content);
-        HBox actions = new HBox(10);
+        card.getChildren().addAll(headerRow, content);
 
-        Button deleteBtn = new Button("Delete");
-        deleteBtn.setStyle("""
-                        -fx-background-color: #ff4d4f;
-                        -fx-text-fill: white;
-                        -fx-font-weight: bold;
-        """);
-
-        deleteBtn.setOnAction(e -> onDeletePost(post.getPostId(), card));
-
-        actions.getChildren().add(deleteBtn);
-
-        card.getChildren().add(actions);
-
+        // -------- Image (optional) --------
         if (post.getImg() != null && !post.getImg().isBlank()) {
             ImageView iv = new ImageView();
             iv.setPreserveRatio(true);
@@ -208,9 +220,11 @@ public class ProfileController {
             } catch (Exception ignored) {}
         }
 
-        //HBox actions = new HBox(10);
-        actions.setPadding(new Insets(8, 0, 0, 0));
-        actions.setStyle("-fx-border-color: #e5e7eb; -fx-border-width: 1 0 0 0;");
+        // -------- Bottom separator line (optional) --------
+        HBox actionsLine = new HBox();
+        actionsLine.setPadding(new Insets(8, 0, 0, 0));
+        actionsLine.setStyle("-fx-border-color: #e5e7eb; -fx-border-width: 1 0 0 0;");
+        card.getChildren().add(actionsLine);
 
         return card;
     }
