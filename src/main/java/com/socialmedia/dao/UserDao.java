@@ -4,6 +4,8 @@ import com.socialmedia.config.DatabaseConfig;
 import com.socialmedia.models.User;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDao {
 
@@ -77,5 +79,33 @@ public class UserDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public List<FriendDao.UserMini> searchUsers(String q, int limit) throws SQLException {
+        String sql = """
+        SELECT id, name
+        FROM `user`
+        WHERE LOWER(name) LIKE ?
+           OR LOWER(email) LIKE ?
+        ORDER BY name
+        LIMIT ?;
+    """;
+
+        List<FriendDao.UserMini> res = new ArrayList<>();
+        try (Connection con = DatabaseConfig.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            String like = "%" + q.trim().toLowerCase() + "%";
+            ps.setString(1, like);
+            ps.setString(2, like);
+            ps.setInt(3, limit);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    res.add(new FriendDao.UserMini(rs.getInt("id"), rs.getString("name")));
+                }
+            }
+        }
+        return res;
     }
 }

@@ -221,4 +221,76 @@ public class PostDao {
         return ps.executeUpdate() > 0;
     }
 }
+
+    public List<FeedPost> searchPostsForViewer(String q, int viewerUserId, int limit) throws SQLException {
+        List<FeedPost> posts = new ArrayList<>();
+
+        String sql = """
+        SELECT
+            p.id AS post_id,
+            p.user_id,
+            u.name AS user_name,
+            p.content,
+            p.img,
+            p.privacy,
+            p.created_at
+        FROM `post` p
+        JOIN `user` u ON u.id = p.user_id
+        WHERE
+            (
+                p.user_id = ?  -- ✅ بوستاتك: كله
+            )
+            OR
+            (
+                p.user_id <> ? AND p.privacy = 'PUBLIC'
+            )
+            OR
+            (
+                p.user_id <> ?
+                AND p.privacy = 'FRIENDS'
+                AND EXISTS (
+                    SELECT 1
+                    FROM friend f
+                    WHERE f.status = 'ACCEPTED'
+                      AND (
+                          (f.user_id = ? AND f.friend_id = p.user_id)
+                       OR (f.friend_id = ? AND f.user_id = p.user_id)
+                      )
+                )
+            )
+        AND LOWER(p.content) LIKE ?
+        ORDER BY p.created_at DESC
+        LIMIT ?;
+    """;
+
+        try (Connection con = DatabaseConfig.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            String like = "%" + q.trim().toLowerCase() + "%";
+
+            ps.setInt(1, viewerUserId);
+            ps.setInt(2, viewerUserId);
+            ps.setInt(3, viewerUserId);
+            ps.setInt(4, viewerUserId);
+            ps.setInt(5, viewerUserId);
+            ps.setString(6, like);
+            ps.setInt(7, limit);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    FeedPost fp = new FeedPost(
+                            rs.getInt("post_id"),
+                            rs.getInt("user_id"),
+                            rs.getString("user_name"),
+                            rs.getString("content"),
+                            rs.getString("img"),
+                            rs.getTimestamp("created_at")
+                    );
+                    fp.setPrivacy(rs.getString("privacy"));
+                    posts.add(fp);
+                }
+            }
+        }
+        return posts;
+    }
 }

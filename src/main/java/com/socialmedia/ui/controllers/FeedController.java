@@ -44,6 +44,9 @@ public class FeedController {
     @FXML
     private Label notificationBadge;
 
+    @FXML
+    private ComboBox<String> privacyBox;
+
     private final FeedService feedService = new FeedService();
     private final PostService postService = new PostService();
     private final AuthService authService = new AuthService();
@@ -51,6 +54,7 @@ public class FeedController {
     private final CommentService commentService = new CommentService();
     private final FriendService friendService = new FriendService();
     private final NotificationService notificationService = new NotificationService();
+    private final SearchService searchService = new SearchService();
 
     private int page = 0;
     private final int pageSize = 10;
@@ -584,6 +588,134 @@ public class FeedController {
         }
     }
 
+    private void openSearchModal(String query) {
+        int viewerId = Session.getCurrentUser().getId();
+
+        Stage modal = new Stage();
+        modal.setTitle("Search");
+        modal.initModality(Modality.APPLICATION_MODAL);
+
+        BorderPane root = new BorderPane();
+        root.setStyle("-fx-background-color: white;");
+
+        // Header
+        HBox header = new HBox(10);
+        header.setPadding(new Insets(10));
+        header.setStyle("-fx-border-color: #e5e7eb; -fx-border-width: 0 0 1 0;");
+
+        Label title = new Label("Search: " + query);
+        title.setStyle("-fx-font-size: 14; -fx-font-weight: bold;");
+
+        Pane spacer = new Pane();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        Button closeBtn = new Button("X");
+        closeBtn.setStyle("-fx-background-color: transparent; -fx-font-weight: bold;");
+        closeBtn.setOnAction(e -> modal.close());
+
+        header.getChildren().addAll(title, spacer, closeBtn);
+        root.setTop(header);
+
+        // Tabs
+        TabPane tabs = new TabPane();
+        tabs.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+
+        VBox usersBox = new VBox(10);
+        usersBox.setPadding(new Insets(12));
+        ScrollPane usersSP = wrapScroll(usersBox);
+
+        VBox postsBox = new VBox(10);
+        postsBox.setPadding(new Insets(12));
+        ScrollPane postsSP = wrapScroll(postsBox);
+
+        Tab usersTab = new Tab("Users", usersSP);
+        Tab postsTab = new Tab("Posts", postsSP);
+
+        tabs.getTabs().addAll(usersTab, postsTab);
+        root.setCenter(tabs);
+
+        Scene scene = new Scene(root, 560, 600);
+        modal.setScene(scene);
+
+        // Load data async
+        usersBox.getChildren().setAll(new Label("Loading..."));
+        postsBox.getChildren().setAll(new Label("Loading..."));
+
+        new Thread(() -> {
+            try {
+                var users = searchService.searchUsers(query);
+                var posts = searchService.searchPosts(query, viewerId);
+
+                Platform.runLater(() -> {
+                    renderUsersResults(usersBox, users);
+                    renderPostsResults(postsBox, posts);
+                    usersTab.setText("Users (" + users.size() + ")");
+                    postsTab.setText("Posts (" + posts.size() + ")");
+                });
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                Platform.runLater(() -> {
+                    usersBox.getChildren().setAll(new Label("Failed to load users"));
+                    postsBox.getChildren().setAll(new Label("Failed to load posts"));
+                });
+            }
+        }).start();
+
+        modal.showAndWait();
+    }
+
+    private void renderUsersResults(VBox box, List<FriendDao.UserMini> users) {
+        box.getChildren().clear();
+        if (users.isEmpty()) {
+            box.getChildren().add(new Label("No users found."));
+            return;
+        }
+
+        for (var u : users) {
+            HBox row = new HBox(10);
+            row.setPadding(new Insets(10));
+            row.setStyle("-fx-background-color: #f0f2f5; -fx-background-radius: 10;");
+
+            Label name = clickableName(u.name(), u.id());
+
+            Pane spacer = new Pane();
+            HBox.setHgrow(spacer, Priority.ALWAYS);
+
+            Button view = new Button("View");
+            view.setStyle("-fx-background-radius: 10; -fx-background-color: #e4e6eb; -fx-font-weight: bold;");
+            view.setOnAction(e -> Navigator.goToUserProfile(u.id()));
+
+            row.getChildren().addAll(name, spacer, view);
+            box.getChildren().add(row);
+        }
+    }
+
+    private void renderPostsResults(VBox box, List<FeedPost> posts) {
+        box.getChildren().clear();
+        if (posts.isEmpty()) {
+            box.getChildren().add(new Label("No posts found."));
+            return;
+        }
+
+        for (FeedPost p : posts) {
+            VBox card = new VBox(6);
+            card.setPadding(new Insets(10));
+            card.setStyle("-fx-background-color: #f0f2f5; -fx-background-radius: 10;");
+
+            Label name = clickableName(p.getUserName(), p.getUserId());
+
+            Label time = new Label(TimeAgo.from(p.getCreatedAt()) + " • " + p.getPrivacy());
+            time.setStyle("-fx-text-fill: #65676b; -fx-font-size: 11;");
+
+            Label content = new Label(p.getContent() == null ? "" : p.getContent());
+            content.setWrapText(true);
+
+            card.getChildren().addAll(name, time, content);
+            box.getChildren().add(card);
+        }
+    }
+
     private Label clickableName(String text, int userId) {
         Label name = new Label(text);
         name.setStyle("-fx-font-weight: bold; -fx-text-fill: #111;");
@@ -600,16 +732,19 @@ public class FeedController {
         alert.setContentText(content);
         return alert.showAndWait().filter(btn -> btn == ButtonType.OK).isPresent();
     }
-    
+
     @FXML private void goToFriends() {
 
         openFriendsModal();
     }
-    @FXML private void onSearch() {
+    @FXML
+    private void onSearch() {
+        if (Session.getCurrentUser() == null) return;
+
         String q = (searchField.getText() == null) ? "" : searchField.getText().trim();
         if (q.isEmpty()) return;
 
-        System.out.println("Search query: " + q);
+        openSearchModal(q);
     }
     @FXML private void goToChat() {
 
@@ -627,14 +762,14 @@ public class FeedController {
         feedScroll.setVvalue(0);
         loadNextPage();
     }
-    
+
     @FXML
     private void onProfile() {
             int userId = com.socialmedia.utils.Session.getCurrentUser().getId();
             Navigator.goToProfile(userId);
 
     }
-    
+
     private void loadNotificationCount() {
         new Thread(() -> {
             try {
