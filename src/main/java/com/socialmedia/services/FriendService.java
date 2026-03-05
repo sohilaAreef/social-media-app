@@ -50,6 +50,10 @@ public class FriendService {
         friendDao.declineRequest(otherUserId, currentUserId);
     }
 
+    public boolean isFriends(int currentUserId, int otherUserId) throws SQLException {
+        return getStatus(currentUserId, otherUserId) == FriendStatus.FRIENDS;
+    }
+
     public void unfriend(int currentUserId, int otherUserId) throws SQLException {
         friendDao.unfriend(currentUserId, otherUserId);
     }

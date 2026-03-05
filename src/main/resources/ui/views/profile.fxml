@@ -32,7 +32,7 @@
                     </padding>
 
                     <!-- Profile Card -->
-                    <VBox fx:id="profileCard" spacing="15" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);">
+                    <VBox fx:id="profileCard" alignment="CENTER" spacing="15" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);">
                         
                         <!-- Profile Content - Image Left, Info Right -->
                         <HBox spacing="20" alignment="TOP_LEFT">
@@ -90,6 +90,12 @@
                         </HBox>
 
                     </VBox>
+                    <Separator />
+
+                    <Label text="My Posts" style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #1877f2;" />
+
+                    <VBox fx:id="postsContainer" spacing="12" fillWidth="true"
+                          style="-fx-padding: 0 0 10 0;" />
                 </VBox>
             </content>
         </ScrollPane>

@@ -5,59 +5,66 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="600" prefWidth="900"
-            style="-fx-background-color: #f0f2f5;"
-            xmlns="http://javafx.com/javafx/17.0.12"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.socialmedia.ui.controllers.UserProfileController">
+<BorderPane prefHeight="600" prefWidth="900" style="-fx-background-color: #f0f2f5;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.socialmedia.ui.controllers.UserProfileController">
 
     <top>
-        <HBox alignment="CENTER_LEFT" spacing="12"
-              style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 10, 0, 0, 4);">
-            <padding><Insets bottom="12" left="20" right="20" top="12"/></padding>
+        <HBox alignment="CENTER_LEFT" spacing="12" style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 10, 0, 0, 4);">
+            <padding>
+                <Insets bottom="12" left="20" right="20" top="12" />
+            </padding>
 
-            <Label text="User Profile" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+            <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="User Profile" />
 
-            <Pane HBox.hgrow="ALWAYS"/>
+            <Pane HBox.hgrow="ALWAYS" />
 
-            <Button text="Back" onAction="#onBack"
-                    style="-fx-background-radius: 16; -fx-background-color: #e4e6eb; -fx-font-weight: bold;"/>
+            <Button onAction="#onBack" style="-fx-background-radius: 16; -fx-background-color: #e4e6eb; -fx-font-weight: bold;" text="Back" />
         </HBox>
     </top>
 
+    <!-- ✅ center لازم Node واحد: ScrollPane -->
     <center>
-        <VBox spacing="16" fillWidth="true">
-            <padding><Insets top="16" right="20" bottom="20" left="20"/></padding>
+        <ScrollPane fx:id="profileScroll" fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;">
+            <content>
+                <VBox fillWidth="true" spacing="16">
+                    <padding>
+                        <Insets bottom="20" left="20" right="20" top="16" />
+                    </padding>
 
-            <VBox spacing="14"
-                  style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 16;
-                         -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.06), 8, 0, 0, 2);">
+                    <!-- Profile Card -->
+                    <VBox spacing="14" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 16;                                  -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.06), 8, 0, 0, 2);">
 
-                <HBox spacing="16" alignment="CENTER_LEFT">
-                    <StackPane prefWidth="110" prefHeight="110"
-                               style="-fx-background-color: #f0f2f5; -fx-background-radius: 55; -fx-padding: 6;">
-                        <ImageView fx:id="profileImageView" fitWidth="98" fitHeight="98" preserveRatio="true" smooth="true"/>
-                    </StackPane>
+                        <HBox alignment="CENTER_LEFT" spacing="16">
 
-                    <VBox spacing="6" HBox.hgrow="ALWAYS">
-                        <Label fx:id="nameLabel" text="Name" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
-                        <Label fx:id="bioLabel" text="" style="-fx-text-fill: #65676b;"/>
-                        <Label fx:id="statusLabel" text="" style="-fx-text-fill: #65676b;"/>
-                    </VBox>
+                            <StackPane prefHeight="110" prefWidth="110" style="-fx-background-color: #f0f2f5; -fx-background-radius: 55; -fx-padding: 6;">
+                                <ImageView fx:id="profileImageView" fitHeight="98" fitWidth="98" preserveRatio="true" smooth="true" />
+                            </StackPane>
 
-                    <VBox spacing="8" alignment="CENTER_RIGHT">
-                        <Button fx:id="friendBtn" text="Add Friend" onAction="#onFriendAction"
-                                style="-fx-background-radius: 10; -fx-padding: 8 16; -fx-font-weight: bold;"/>
-                        <!-- لو INCOMING_PENDING هنظهر Accept/Decline -->
-                        <HBox fx:id="incomingBox" spacing="8" visible="false" managed="false">
-                            <Button text="Accept" onAction="#onAccept" style="-fx-background-color: #1877f2; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10;"/>
-                            <Button text="Decline" onAction="#onDecline" style="-fx-background-color: #e4e6eb; -fx-font-weight: bold; -fx-background-radius: 10;"/>
+                            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                <Label fx:id="nameLabel" style="-fx-font-size: 18; -fx-font-weight: bold;" text="Name" />
+                                <Label fx:id="bioLabel" style="-fx-text-fill: #65676b;" text="" wrapText="true" />
+                                <Label fx:id="statusLabel" style="-fx-text-fill: #65676b;" text="" />
+                            </VBox>
+
+                            <VBox alignment="CENTER_RIGHT" spacing="8">
+                                <Button fx:id="friendBtn" onAction="#onFriendAction" style="-fx-background-radius: 10; -fx-padding: 8 16; -fx-font-weight: bold;" text="Add Friend" />
+
+                                <HBox fx:id="incomingBox" managed="false" spacing="8" visible="false">
+                                    <Button onAction="#onAccept" style="-fx-background-color: #1877f2; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10;" text="Accept" />
+                                    <Button onAction="#onDecline" style="-fx-background-color: #e4e6eb; -fx-font-weight: bold; -fx-background-radius: 10;" text="Decline" />
+                                </HBox>
+                            </VBox>
+
                         </HBox>
                     </VBox>
-                </HBox>
 
-            </VBox>
-        </VBox>
+                    <Separator />
+
+                    <Label style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #1877f2;" text="Posts"  />
+
+                    <VBox fx:id="postsContainer" fillWidth="true" maxWidth="1.7976931348623157E308" spacing="12" />
+                </VBox>
+            </content>
+        </ScrollPane>
     </center>
 
 </BorderPane>
